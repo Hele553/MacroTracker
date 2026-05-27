@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MacroTracker</title>
+    <link rel="shortcut icon" href="assets/icon/macro.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/modal.css">
+    <link rel="stylesheet" href="css/style.css">
+
+
+</head>
+
+<body>
+    <aside>
+        <div class="sidebar__logo">MacroTracker</div>
+        <div class="sidebar__option">
+            <div class="sidebar__option_div_active">Dashboard</div>
+            <div>Food</div>
+            <div>Progress</div>
+            <div>Recipes</div>
+        </div>
+        <div class="sidebar__bottom">
+            <div class="sidebar__setting">Setting</div>
+            <div class="sidebar__utente">mario</div>
+        </div>
+    </aside>
+    <main>
+        <div id="modal_add" class="modal" hidden>
+            <div class="modal__overlay"></div>
+
+            <div class="modal__box">
+
+                <div class="modal__header">
+                    <h2 class="modal__title">Add to the diary</h2>
+                    <button class="modal__close" id="btn-chiudi-modal" aria-label="Chiudi modal">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                            <path d="M2 2l14 14M16 2L2 16" stroke="currentColor" stroke-width="1.5"
+                                stroke-linecap="round" />
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="modal__body">
+                    <div class="field">
+                        <label for="campo-alimento" class="field__label">Food</label>
+                        <select id="campo-alimento" name="ID_Alimento" class="field__select">
+                            <option value="">Select a food...</option>
+                        </select>
+                    </div>
+
+                    <div class="field-row">
+                        <div class="field">
+                            <label for="campo-peso" class="field__label">Weight (p)</label>
+                            <input type="number" id="campo-peso" name="Peso_grammi" class="field__input"
+                                placeholder="100" min="1" max="2000" value="100" />
+                        </div>
+                        <div class="field">
+                            <label for="campo-data" class="field__label">Date</label>
+                            <input type="date" id="campo-data" name="Data" class="field__input" />
+                        </div>
+                    </div>
+
+                    <div class="macro-preview" id="macro-preview" aria-live="polite">
+                        <div class="macro-item">
+                            <span class="macro-item__label">Calories</span>
+                            <span class="macro-item__value" id="m-kcal">—</span>
+                        </div>
+                        <div class="macro-item">
+                            <span class="macro-item__label">Carbs</span>
+                            <span class="macro-item__value" id="m-carb">—</span>
+                        </div>
+                        <div class="macro-item">
+                            <span class="macro-item__label">Proteins</span>
+                            <span class="macro-item__value" id="m-prot">—</span>
+                        </div>
+                        <div class="macro-item">
+                            <span class="macro-item__label">Fats</span>
+                            <span class="macro-item__value" id="m-gras">—</span>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field__label">Meal</label>
+                        <div class="pasto-grid" role="group" aria-label="Seleziona pasto">
+                            <button type="button" class="pasto-btn" data-pasto="Breakfast">Breakfast</button>
+                            <button type="button" class="pasto-btn" data-pasto="Lunch">Lunch</button>
+                            <button type="button" class="pasto-btn" data-pasto="Dinner">Dinner</button>
+                            <button type="button" class="pasto-btn" data-pasto="Snack">Snack</button>
+                        </div>
+                        <!-- campo nascosto che viene passato al form -->
+                        <input type="hidden" id="campo-pasto" name="Pasto" value="Colazione" />
+                    </div>
+
+                </div>
+
+                <div class="modal__footer">
+                    <button type="button" class="btn btn--secondary" id="btn-annulla-modal">Cancel</button>
+                    <button type="button" class="btn btn--primary" id="btn-submit-modal">
+                        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
+                            <path d="M7.5 1v13M1 7.5h13" stroke="currentColor" stroke-width="1.5"
+                                stroke-linecap="round" />
+                        </svg>
+                        Add
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="calendar">
+            <span class="calendare_btn1" data-day-value="-1">
+                <img src="assets/icon/bottom_arrow.png" alt="" style="transform: rotate(90deg); cursor: pointer;">
+            </span>
+            <span class="calendar__selectedDate"></span>
+            <span class="calendare_btn1" data-day-value="1">
+                <img src="assets/icon/bottom_arrow.png" alt="" style="transform: rotate(-90deg); cursor: pointer;">
+            </span>
+        </div>
+        <div class="dashboard">
+            <div class="dashboard__cake">
+                <!-- <img src="cake.png" alt="" style="height: 400px;"> -->
+            </div>
+            <div class="dashboard__macros">
+                <div class="dashboard__macro" id="dashboard__macro-Cal"></div>
+                <div class="dashboard__macro" id="dashboard__macro-Car"></div>
+                <div class="dashboard__macro" id="dashboard__macro-Pro"></div>
+                <div class="dashboard__macro" id="dashboard__macro-Fat"></div>
+            </div>
+        </div>
+        <div class="diary">
+            <div class="diary__meal" id="diary__meal_Breakfast">
+                <div class="diary__meal_header">
+                    <h3>🥐 Breakfast</h3>
+                    <div class="diary__meal_header_buttons">
+                        <span class="openModal" id="openModal-breakfast">+</span>
+                        <div>
+                            <img src="assets/icon/bottom_arrow.png" class="diary__section_content_open" meal="Breakfast" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="diary__section_content" id="diary__section_content_Breakfast"></div>
+            </div>
+            <div class="diary__meal" id="diary__meal_Lunch">
+                <div class="diary__meal_header">
+                    <h3>🍝 Launch</h3>
+                    <div class="diary__meal_header_buttons">
+                        <span class="openModal">+</span>
+                        <div>
+                            <img src="assets/icon/bottom_arrow.png" class="diary__section_content_open" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="diary__section_content" id="diary__section_content_Lunch"></div>
+            </div>
+            <div class="diary__meal" id="diary__meal_Dinner">
+                <div class="diary__meal_header">
+                    <h3>🥗 Dinner</h3>
+                    <div class="diary__meal_header_buttons">
+                        <span class="openModal">+</span>
+                        <div>
+                            <img src="assets/icon/bottom_arrow.png" class="diary__section_content_open" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="diary__section_content" id="diary__section_content_Dinner"></div>
+            </div>
+            <div class="diary__meal" id="diary__meal_Snack">
+                <div class="diary__meal_header">
+                    <h3>🍫 Snack</h3>
+                    <div class="diary__meal_header_buttons">
+                        <span class="openModal">+</span>
+                        <div>
+                            <img src="assets/icon/bottom_arrow.png" class="diary__section_content_open" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="diary__section_content" id="diary__section_content_Snack"></div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/main.js" type="module"></script>
+</body>
+
+</html>

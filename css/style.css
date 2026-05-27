@@ -1,0 +1,335 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+:root {
+    /* Backgrounds */
+    --bg-main: #0F1412;
+    --bg-sidebar: #151C18;
+    --bg-card: #1B2420;
+    --bg-hover: #24302A;
+    --bg-active: #2E4A3E;
+
+    /* Brand */
+    --color-primary: #7CC6A6;
+    --color-primary-light: #9FE0C2;
+    --color-primary-dark: #4F8A6D;
+
+    /* Borders */
+    --border-light: #26332D;
+    --border-medium: #33423A;
+
+    /* Text */
+    --text-primary: #F4F8F5;
+    --text-secondary: #B4C1BA;
+    --text-muted: #7E8E86;
+    --text-dark: #0F1412;
+
+    /* Macro colors */
+    --macro-protein: #7CC6A6;
+    --macro-carbs: #F2C879;
+    --macro-fats: #E89B8C;
+    --macro-calories: #8FA8FF;
+
+    /* Meal category accents */
+    --meal-breakfast: #E9C46A;
+    --meal-lunch: #84C7A5;
+    --meal-dinner: #7EA3F2;
+    --meal-snack: #F4B183;
+
+    /* States */
+    --success: #7CCF92;
+    --warning: #F2C879;
+    --error: #E67E73;
+    --info: #8FA8FF;
+
+    /* Shadows */
+    --shadow-sm: 0 4px 10px rgba(0, 0, 0, 0.18);
+    --shadow-md: 0 10px 24px rgba(0, 0, 0, 0.28);
+
+    /* Radius */
+    --radius-sm: 12px;
+    --radius-md: 18px;
+    --radius-lg: 24px;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+body {
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+    overflow: hidden;
+    background-color: var(--bg-main);
+}
+
+aside {
+    background-color: var(--bg-sidebar);
+    height: 100vh;
+    padding: 20px;
+    width: 20vw;
+    flex-shrink: 0;
+}
+
+.sidebar__logo {
+    font-size: 2rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 7vh;
+}
+
+.sidebar__option {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.sidebar__option div {
+    background-color: var(--bg-sidebar);
+    color: white;
+    cursor: pointer;
+    padding: 15px 20px;
+    transition: background-color .3s ease;
+    border-radius: 10px;
+}
+
+.sidebar__option div:hover {
+    color: var(--color-primary-light);
+    border: solid 1px var(--border-medium);
+}
+
+.sidebar__option_div_active {
+    background-color: var(--bg-hover) !important;
+    color: var(--color-primary-light) !important;
+    border: solid 1px var(--border-medium);
+}
+
+.sidebar__bottom {
+    background-color: rgb(255, 0, 200);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+
+.calendar {
+    height: 5vh;
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 40px;
+    margin: 0px 0px 20px 0px;
+}
+
+.calendar span {
+    font-size: 25px;
+    color: white;
+    font-weight: 700;
+}
+
+.dashboard {
+    background-color: var(--bg-sidebar);
+    min-height: 60vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-radius: 20px;
+}
+
+.dashboard__cake {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dashboard__macros {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    padding: 30px;
+}
+
+.dashboard__macro {
+    background-color: var(--bg-card);
+    border-radius: 10px;
+    padding: 20px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: background-color .3s ease;
+}
+
+.dashboard__macro h3 {
+    font-size: 2em;
+    font-weight: 700;
+    position: relative;
+}
+
+.dashboard__macro div {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.dashboard__macro div p {
+    font-size: 3vw;
+    white-space: nowrap;
+    font-weight: 700;
+    text-align: center;
+}
+
+@keyframes flash {
+    0%   { opacity: 0; transform: translateY(-4px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+.dashboard__macro p.updated {
+    animation: flash 1s ease;
+}
+
+#dashboard__macro-Cal h3 {
+    color: var(--macro-calories);
+}
+
+#dashboard__macro-Car h3 {
+    color: var(--macro-carbs);
+}
+
+#dashboard__macro-Pro h3 {
+    color: var(--macro-protein);
+}
+
+#dashboard__macro-Fat h3 {
+    color: var(--macro-fats);
+}
+
+#dashboard__macro-Cal:hover {
+    background-color: rgba(143, 168, 255, 0.34);
+}
+
+#dashboard__macro-Car:hover {
+    background-color: rgba(242, 200, 121, 0.34);
+}
+
+#dashboard__macro-Pro:hover {
+    background-color: rgba(124, 198, 166, 0.34);
+    ;
+}
+
+#dashboard__macro-Fat:hover {
+    background-color: #e89b8c56;
+}
+
+
+/* =================
+Diario
+================= */
+
+.diary {
+    padding: 20px 0px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.diary__meal {
+    display: flex;
+    width: 100%;
+    background-color: red;
+    flex-direction: column;
+    padding: 20px 20px;
+    background-color: var(--bg-card);
+    border-radius: 15px;
+}
+
+.diary__meal_header {
+    display: flex;
+    position: relative;
+    width: 100%;
+    /* margin: 0px 0px 15px 0px; */
+}
+
+.diary__meal_header h3 {
+    color: white;
+    font-size: 30px;
+}
+
+.diary__meal_header_buttons {
+    position: absolute;
+    right: 15px;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.diary__meal_header_buttons span {
+    color: white;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.diary__meal_header_buttons div {
+    color: white;
+    font-size: 25px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.diary__section_content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-height: 0px;
+    overflow: hidden;
+    transition: all 0.4s ease;
+}
+
+.diary__section_content_open {
+    transition: all .3s ease;
+}
+
+.diary__section_element {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    justify-items: center;
+    align-items: center;
+    border: 1px solid var(--border-light);
+    padding: 10px 15px;
+    border-radius: 10px;
+    transition: all .3s ease;
+}
+
+.diary__section_element:hover {
+    background-color: var(--bg-hover);
+}
+
+.diary__section_element span {
+    color: white;
+    font-size: 20px;
+}
+
+.diary__section_element_options {
+    display: flex;
+    gap: 5vw;
+    padding: 5px;
+}
+
+.diary__section_element_options img {
+    height: 25px;
+    cursor: pointer;
+}
