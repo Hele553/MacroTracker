@@ -15,8 +15,9 @@ async function request(endpoint, options = {}) {
 
 export const api = {
     diary: {
-        add: (meal) => request('/diary', { method: 'POST', body: JSON.stringify(meal) }),
         getAll: (date) => request(`/diary?date=${date}`, {method: 'GET'}),
+        add: (meal) => request('/diary', { method: 'POST', body: JSON.stringify(meal) }),
+        updateOne: (id, meal) => request(`/diary/${id}`, { method: 'PUT', body: JSON.stringify(meal) }),
         deleteOne: (id) => request(`/diary/${id}`, {method: 'DELETE'})
     },
     food: {

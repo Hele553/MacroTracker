@@ -14,6 +14,8 @@ if ($method === 'GET' && $id === null) {
     getEntries();
 } elseif ($method === 'POST' && $id === null) {
     addEntry();
+} elseif ($method === 'PUT' && $id !== null) {
+    updateEntry($id);
 } elseif ($method === 'DELETE' && $id !== null) {
     removeEntry($id);
 } else {
@@ -24,16 +26,15 @@ if ($method === 'GET' && $id === null) {
 function getEntries(): void
 {
     // $userId = $_GET['user'] ?? null;
-    // $date   = $_GET['date'] ?? null;
     $userId = 1;
     $date = $_GET['date'] ?? null;
-    
+
 
     if (!$userId || !$date) {
         json_error('Parameters user and date are required');
     }
 
-    
+
     $db   = getDB();
     $stmt = $db->prepare('
         SELECT e.entry_id, e.weight_grams, e.meal, e.date,
@@ -88,6 +89,43 @@ function addEntry(): void
     json_ok(['entry_id' => $db->lastInsertId()], 201);
 }
 
+
+function updateEntry(int $id): void
+{
+    $body = json_decode(file_get_contents('php://input'), true);
+
+    $fields = ['food_id', 'weight_grams', 'date', 'meal'];
+    foreach ($fields as $field) {
+        if (empty($body[$field])) {
+            json_error("Missing required field: $field");
+        }
+    }
+
+    $validMeals = ['Breakfast', 'Lunch', 'Dinner', 'Snack'];
+    if (!in_array($body['meal'], $validMeals)) {
+        json_error('Invalid meal value');
+    }
+
+    $db   = getDB();
+    $stmt = $db->prepare('
+        UPDATE diary_entry
+        SET food_id = ?, weight_grams = ?, date = ?, meal = ?
+        WHERE entry_id = ?
+    ');
+    $stmt->execute([
+        $body['food_id'],
+        $body['weight_grams'],
+        $body['date'],
+        $body['meal'],
+        $id,
+    ]);
+
+    if ($stmt->rowCount() === 0) {
+        json_error('Entry not found', 404);
+    }
+
+    json_ok(['updated' => $id]);
+}
 
 function removeEntry(int $id): void
 {

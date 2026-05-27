@@ -1,4 +1,4 @@
-import { openModal, closeModal, initModal, formatDate, addDays } from '../ui-helpers.js';
+import { openModal, closeModal, initModal, formatDate, addDays, getModalEntryId, getModalMode } from '../ui-helpers.js';
 import { api } from '../api.js';
 
 let statusOpen_diary__section_content = [false, false, false, false];
@@ -52,6 +52,7 @@ async function loadAllEntries() {
         calories.className = 'diary__section_element_calories';
         divOption.className = 'diary__section_element_options';
         mod.setAttribute('src', 'assets/icon/pencil.png')
+        mod.setAttribute('data-mod-btn', entry.meal)
         bin.setAttribute('src', 'assets/icon/delete.png')
 
         name.textContent = entry.name;
@@ -72,10 +73,19 @@ async function loadAllEntries() {
 
         document.getElementById(`diary__section_content_${entry.meal}`).appendChild(tagEntry);
 
-
         bin.addEventListener('click', async () => {
             await api.diary.deleteOne(entry.entry_id);
             loadAllEntries();
+        })
+
+        mod.addEventListener('click', () => {
+            openModal('modal_add', null, null, {
+                entry_id: entry.entry_id,
+                food_id: entry.food_id,
+                weight_grams: entry.weight_grams,
+                date: formatDate(selectedDate, 2),
+                meal: entry.meal,
+            })
         })
     }
     await reloadDashboard(macros)
@@ -86,11 +96,11 @@ export function initDiary() {
     function updateDiaryDate() {
         document.querySelector('.calendar__selectedDate').textContent = formatDate(selectedDate, 1);
     }
-    
+
     document.querySelectorAll('.calendare_btn1').forEach(btn => {
         btn.addEventListener('click', () => {
             selectedDate = addDays(selectedDate, Number(btn.dataset.dayValue));
-            updateDiaryDate(); 
+            updateDiaryDate();
             loadAllEntries();
         })
     })
@@ -99,8 +109,8 @@ export function initDiary() {
     initModal('modal_add');
     document.querySelectorAll('.openModal').forEach(btn => {
         btn.addEventListener('click', () => {
-            openModal('modal_add');
-        });
+            openModal('modal_add', btn.dataset.addBtn, formatDate(selectedDate, 2));
+        })
     })
 
     document.querySelectorAll('.diary__section_content_open').forEach((btn, i) => {
@@ -125,33 +135,27 @@ export function initDiary() {
             const entry = {
                 food_id: document.getElementById('campo-alimento').value,
                 weight_grams: document.getElementById('campo-peso').value,
-                // date: document.getElementById('campo-data').value,
-                date: '2026-05-15',
+                date: document.getElementById('campo-data').value,
                 meal: document.getElementById('campo-pasto').value,
                 user_id: 1
             };
 
-            console.log(entry)
-
-            // if (!voce.ID_Alimento) return showToast('Seleziona un alimento', 'error');
-            // if (!voce.Peso_grammi) return showToast('Inserisci il peso', 'error');
-
             try {
-                const data = await api.diary.add(entry);
-                console.log(data);
+                if (getModalMode() === 'edit') {
+                    await api.diary.updateOne(getModalEntryId(), entry);
+                } else {
+                    await api.diary.add(entry);
+                }
+
                 closeModal('modal_add');
-                // showToast('Alimento aggiunto');
                 await loadAllEntries();
-                console.log('aggiungto')
             } catch (err) {
-                console.log(err.message);
-                // showToast('Errore: ' + err.message, 'error');
+                console.error(err.message);
             }
-        });
+        })
 
     document.getElementById('btn-chiudi-modal').addEventListener('click', () => closeModal('modal_add'))
     document.getElementById('btn-annulla-modal').addEventListener('click', () => closeModal('modal_add'))
 
-    // carica le voci esistenti all'avvio della pagina
     loadAllEntries();
 }

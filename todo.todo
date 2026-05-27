@@ -1,4 +1,5 @@
-- ora di default nel modal
 - animazione data
-- modal di modifica
 - login
+- toast campi non validi
+- null nel db
+- visualizzazione mobile

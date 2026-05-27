@@ -50,7 +50,7 @@
 
                     <div class="field-row">
                         <div class="field">
-                            <label for="campo-peso" class="field__label">Weight (p)</label>
+                            <label for="campo-peso" class="field__label">Weight (g)</label>
                             <input type="number" id="campo-peso" name="Peso_grammi" class="field__input"
                                 placeholder="100" min="1" max="2000" value="100" />
                         </div>
@@ -133,9 +133,10 @@
                 <div class="diary__meal_header">
                     <h3>🥐 Breakfast</h3>
                     <div class="diary__meal_header_buttons">
-                        <span class="openModal" id="openModal-breakfast">+</span>
+                        <span class="openModal" data-add-btn="breakfast">+</span>
                         <div>
-                            <img src="assets/icon/bottom_arrow.png" class="diary__section_content_open" meal="Breakfast" alt="">
+                            <img src="assets/icon/bottom_arrow.png" class="diary__section_content_open" meal="Breakfast"
+                                alt="">
                         </div>
                     </div>
                 </div>
@@ -143,9 +144,9 @@
             </div>
             <div class="diary__meal" id="diary__meal_Lunch">
                 <div class="diary__meal_header">
-                    <h3>🍝 Launch</h3>
+                    <h3>🍝 Lunch</h3>
                     <div class="diary__meal_header_buttons">
-                        <span class="openModal">+</span>
+                        <span class="openModal" data-add-btn="lunch">+</span>
                         <div>
                             <img src="assets/icon/bottom_arrow.png" class="diary__section_content_open" alt="">
                         </div>
@@ -157,7 +158,7 @@
                 <div class="diary__meal_header">
                     <h3>🥗 Dinner</h3>
                     <div class="diary__meal_header_buttons">
-                        <span class="openModal">+</span>
+                        <span class="openModal" data-add-btn="dinner">+</span>
                         <div>
                             <img src="assets/icon/bottom_arrow.png" class="diary__section_content_open" alt="">
                         </div>
@@ -169,7 +170,7 @@
                 <div class="diary__meal_header">
                     <h3>🍫 Snack</h3>
                     <div class="diary__meal_header_buttons">
-                        <span class="openModal">+</span>
+                        <span class="openModal" data-add-btn="snack">+</span>
                         <div>
                             <img src="assets/icon/bottom_arrow.png" class="diary__section_content_open" alt="">
                         </div>
