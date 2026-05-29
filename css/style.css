@@ -81,6 +81,15 @@ aside {
     font-weight: 700;
     color: white;
     margin-bottom: 7vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: left;
+    gap: 1vw;
+}
+
+.sidebar__logo img {
+    height: 40px;
 }
 
 .sidebar__option {
@@ -94,8 +103,13 @@ aside {
     color: white;
     cursor: pointer;
     padding: 15px 20px;
-    transition: background-color .3s ease;
     border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: left;
+    gap: 20px;
+    transition: background-color .3s ease;
 }
 
 .sidebar__option div:hover {
@@ -109,12 +123,41 @@ aside {
     border: solid 1px var(--border-medium);
 }
 
+.sidebar__option_div_active .sidebar__icon path {
+    stroke: #9FE0C2;
+    fill: #9FE0C2;
+}
+
 .sidebar__bottom {
     background-color: rgb(255, 0, 200);
     position: absolute;
     bottom: 0;
     left: 0;
 }
+
+.sidebar__icon {
+    width: 20px;
+    height: 20px;
+}
+
+.sidebar__icon path {
+    stroke: #ffffff;
+    fill: #ffffff;
+    transition: stroke 0.3s ease, fill 0.3s ease;
+}
+
+.sidebar__option div:hover .sidebar__icon path {
+    stroke: #9FE0C2;
+    fill: #9FE0C2;
+}
+
+/* .sidebar__icon--fill-g g {
+  fill: #ffffff;
+  transition: fill 0.3s ease;
+}
+.sidebar__icon--fill-g:hover g {
+  fill: #9FE0C2;
+} */
 
 main {
     flex: 1;
@@ -191,8 +234,15 @@ main {
 }
 
 @keyframes flash {
-    0%   { opacity: 0; transform: translateY(-4px); }
-    100% { opacity: 1; transform: translateY(0); }
+    0% {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .dashboard__macro p.updated {
