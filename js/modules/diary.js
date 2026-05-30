@@ -137,7 +137,6 @@ export function initDiary() {
                 weight_grams: document.getElementById('campo-peso').value,
                 date: document.getElementById('campo-data').value,
                 meal: document.getElementById('campo-pasto').value,
-                user_id: 1
             };
 
             try {

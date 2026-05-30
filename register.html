@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrati – MacroTracker</title>
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body class="login-page">
+    <div class="login-card">
+        <div class="login-card__logo">
+            <img src="assets/icon/macro.png" alt="">
+            <span>MacroTracker</span>
+        </div>
+        <div class="login-card__heading">
+            <h1>Crea un account</h1>
+            <p>Inizia a tracciare i tuoi macros</p>
+        </div>
+        <div class="login-card__fields">
+            <div class="field">
+                <label class="field__label">Username</label>
+                <input type="text" id="reg-user" class="field__input" placeholder="mario.rossi">
+            </div>
+            <div class="field">
+                <label class="field__label">Email</label>
+                <input type="email" id="reg-email" class="field__input" placeholder="mario@example.com">
+            </div>
+            <div class="field">
+                <label class="field__label">Password</label>
+                <input type="password" id="reg-pass" class="field__input" placeholder="••••••••">
+            </div>
+            <div class="field">
+                <label class="field__label">Calorie giornaliere</label>
+                <input type="number" id="reg-calories" class="field__input" placeholder="2000" min="500" max="9000">
+            </div>
+        </div>
+        <p id="reg-error" class="login-card__error"></p>
+        <button class="login-card__btn" id="registerBtn">Registrati</button>
+        <div class="login-card__divider">oppure</div>
+        <p class="login-card__footer">
+            Hai già un account? <a href="login.html">Accedi</a>
+        </p>
+    </div>
+    <script src="js/modules/register.js" type="module"></script>
+</body>
+</html>

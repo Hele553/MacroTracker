@@ -1,51 +1,34 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 :root {
-    /* Backgrounds */
     --bg-main: #0F1412;
     --bg-sidebar: #151C18;
     --bg-card: #1B2420;
     --bg-hover: #24302A;
     --bg-active: #2E4A3E;
-
-    /* Brand */
     --color-primary: #7CC6A6;
     --color-primary-light: #9FE0C2;
     --color-primary-dark: #4F8A6D;
-
-    /* Borders */
     --border-light: #26332D;
     --border-medium: #33423A;
-
-    /* Text */
     --text-primary: #F4F8F5;
     --text-secondary: #B4C1BA;
     --text-muted: #7E8E86;
     --text-dark: #0F1412;
-
-    /* Macro colors */
     --macro-protein: #7CC6A6;
     --macro-carbs: #F2C879;
     --macro-fats: #E89B8C;
     --macro-calories: #8FA8FF;
-
-    /* Meal category accents */
     --meal-breakfast: #E9C46A;
     --meal-lunch: #84C7A5;
     --meal-dinner: #7EA3F2;
     --meal-snack: #F4B183;
-
-    /* States */
     --success: #7CCF92;
     --warning: #F2C879;
     --error: #E67E73;
     --info: #8FA8FF;
-
-    /* Shadows */
     --shadow-sm: 0 4px 10px rgba(0, 0, 0, 0.18);
     --shadow-md: 0 10px 24px rgba(0, 0, 0, 0.28);
-
-    /* Radius */
     --radius-sm: 12px;
     --radius-md: 18px;
     --radius-lg: 24px;
@@ -74,6 +57,7 @@ aside {
     padding: 20px;
     width: 20vw;
     flex-shrink: 0;
+    position: relative;
 }
 
 .sidebar__logo {
@@ -84,7 +68,7 @@ aside {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: left;
+    justify-content: center;
     gap: 1vw;
 }
 
@@ -92,13 +76,13 @@ aside {
     height: 40px;
 }
 
-.sidebar__option {
+.sidebar__options {
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
-.sidebar__option div {
+.sidebar__option {
     background-color: var(--bg-sidebar);
     color: white;
     cursor: pointer;
@@ -109,10 +93,11 @@ aside {
     align-items: center;
     justify-content: left;
     gap: 20px;
+    text-decoration: none;
     transition: background-color .3s ease;
 }
 
-.sidebar__option div:hover {
+.sidebar__option:hover {
     color: var(--color-primary-light);
     border: solid 1px var(--border-medium);
 }
@@ -128,36 +113,59 @@ aside {
     fill: #9FE0C2;
 }
 
-.sidebar__bottom {
-    background-color: rgb(255, 0, 200);
-    position: absolute;
-    bottom: 0;
-    left: 0;
-}
-
 .sidebar__icon {
     width: 20px;
     height: 20px;
 }
 
-.sidebar__icon path {
+/* === STROKE (dashboard, accedi, settings) === */
+.sidebar__icon--stroke path,
+.sidebar__icon--stroke circle {
     stroke: #ffffff;
-    fill: #ffffff;
-    transition: stroke 0.3s ease, fill 0.3s ease;
+    fill: none;
+    transition: stroke 0.3s ease;
 }
 
-.sidebar__option div:hover .sidebar__icon path {
+.sidebar__option:hover .sidebar__icon--stroke path,
+.sidebar__option:hover .sidebar__icon--stroke circle {
     stroke: #9FE0C2;
+}
+
+/* === FILL path (food) === */
+.sidebar__icon--fill path {
+    fill: #ffffff;
+    transition: fill 0.3s ease;
+}
+
+.sidebar__option:hover .sidebar__icon--fill path {
     fill: #9FE0C2;
 }
 
-/* .sidebar__icon--fill-g g {
-  fill: #ffffff;
-  transition: fill 0.3s ease;
+/* === FILL g (progress, recipes) === */
+.sidebar__icon--fill-g g {
+    fill: #ffffff;
+    transition: fill 0.3s ease;
 }
-.sidebar__icon--fill-g:hover g {
-  fill: #9FE0C2;
-} */
+
+.sidebar__option:hover .sidebar__icon--fill-g g {
+    fill: #9FE0C2;
+}
+
+.sidebar__bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 0px 20px 20px 20px;
+}
+
+.sidebar__bottom_line {
+    background-color: #ffffff;
+    width: 100%;
+    height: 0.5px;
+    display: block;
+    margin: 0px 0px 20px 0px;
+}
 
 main {
     flex: 1;
@@ -166,7 +174,6 @@ main {
     overflow-y: auto;
     padding: 20px;
 }
-
 
 .calendar {
     height: 5vh;
@@ -238,7 +245,6 @@ main {
         opacity: 0;
         transform: translateY(-4px);
     }
-
     100% {
         opacity: 1;
         transform: translateY(0);
@@ -249,42 +255,18 @@ main {
     animation: flash 1s ease;
 }
 
-#dashboard__macro-Cal h3 {
-    color: var(--macro-calories);
-}
+#dashboard__macro-Cal h3 { color: var(--macro-calories); }
+#dashboard__macro-Car h3 { color: var(--macro-carbs); }
+#dashboard__macro-Pro h3 { color: var(--macro-protein); }
+#dashboard__macro-Fat h3 { color: var(--macro-fats); }
 
-#dashboard__macro-Car h3 {
-    color: var(--macro-carbs);
-}
-
-#dashboard__macro-Pro h3 {
-    color: var(--macro-protein);
-}
-
-#dashboard__macro-Fat h3 {
-    color: var(--macro-fats);
-}
-
-#dashboard__macro-Cal:hover {
-    background-color: rgba(143, 168, 255, 0.34);
-}
-
-#dashboard__macro-Car:hover {
-    background-color: rgba(242, 200, 121, 0.34);
-}
-
-#dashboard__macro-Pro:hover {
-    background-color: rgba(124, 198, 166, 0.34);
-    ;
-}
-
-#dashboard__macro-Fat:hover {
-    background-color: #e89b8c56;
-}
-
+#dashboard__macro-Cal:hover { background-color: rgba(143, 168, 255, 0.34); }
+#dashboard__macro-Car:hover { background-color: rgba(242, 200, 121, 0.34); }
+#dashboard__macro-Pro:hover { background-color: rgba(124, 198, 166, 0.34); }
+#dashboard__macro-Fat:hover { background-color: #e89b8c56; }
 
 /* =================
-Diario
+   Diario
 ================= */
 
 .diary {
@@ -297,7 +279,6 @@ Diario
 .diary__meal {
     display: flex;
     width: 100%;
-    background-color: red;
     flex-direction: column;
     padding: 20px 20px;
     background-color: var(--bg-card);
@@ -308,7 +289,6 @@ Diario
     display: flex;
     position: relative;
     width: 100%;
-    /* margin: 0px 0px 15px 0px; */
 }
 
 .diary__meal_header h3 {

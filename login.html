@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login – MacroTracker</title>
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body class="login-page">
+    <div class="login-card">
+        <div class="login-card__logo">
+            <img src="assets/icon/macro.png" alt="">
+            <span>MacroTracker</span>
+        </div>
+        <div class="login-card__heading">
+            <h1>Bentornato</h1>
+            <p>Accedi al tuo account</p>
+        </div>
+        <div class="login-card__fields">
+            <div class="field">
+                <label class="field__label">Username o email</label>
+                <input type="text" id="login-user" class="field__input" placeholder="mario.rossi">
+            </div>
+            <div class="field">
+                <label class="field__label">Password</label>
+                <input type="password" id="login-pass" class="field__input" placeholder="••••••••">
+            </div>
+        </div>
+        <p id="login-error" class="login-card__error"></p>
+        <button class="login-card__btn" id="loginBtn">Accedi</button>
+        <div class="login-card__divider">oppure</div>
+        <p class="login-card__footer">
+            Non hai un account? <a href="register.html">Registrati</a>
+        </p>
+    </div>
+    <script src="js/modules/login.js" type="module"></script>
+</body>
+</html>

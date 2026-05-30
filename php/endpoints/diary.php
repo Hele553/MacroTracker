@@ -2,6 +2,10 @@
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../helper/response.php';
 
+if (empty($_SESSION['user_id'])) {
+    json_error('Non autenticato', 401);
+    exit;
+}
 
 header('Content-Type: application/json');
 $method = $_SERVER['REQUEST_METHOD'];
@@ -25,20 +29,17 @@ if ($method === 'GET' && $id === null) {
 
 function getEntries(): void
 {
-    // $userId = $_GET['user'] ?? null;
-    $userId = 1;
-    $date = $_GET['date'] ?? null;
-
+    $userId = $_SESSION['user_id'];
+    $date   = $_GET['date'] ?? null;
 
     if (!$userId || !$date) {
         json_error('Parameters user and date are required');
     }
 
-
     $db   = getDB();
     $stmt = $db->prepare('
         SELECT e.entry_id, e.weight_grams, e.meal, e.date,
-               f.name, f.calories, f.carbs, f.protein, f.fat
+               f.food_id, f.name, f.calories, f.carbs, f.protein, f.fat
         FROM   diary_entry e
         JOIN   food f ON f.food_id = e.food_id
         WHERE  e.user_id = ? AND e.date = ?
@@ -52,8 +53,7 @@ function getEntries(): void
 function addEntry(): void
 {
     $body   = json_decode(file_get_contents('php://input'), true);
-    error_log('Body ricevuto: ' . json_encode($body));
-    $fields = ['food_id', 'weight_grams', 'date', 'meal', 'user_id'];
+    $fields = ['food_id', 'weight_grams', 'date', 'meal'];
 
     foreach ($fields as $field) {
         if (empty($body[$field])) {
@@ -63,7 +63,7 @@ function addEntry(): void
 
     $validMeals = ['Breakfast', 'Lunch', 'Dinner', 'Snack'];
     if (!in_array($body['meal'], $validMeals)) {
-        json_error('Invalid meal valueee');
+        json_error('Invalid meal value');
     }
 
     $db = getDB();
@@ -74,6 +74,9 @@ function addEntry(): void
         json_error('Food not found', 404);
     }
 
+    $dayStmt = $db->prepare('INSERT IGNORE INTO day (date, user_id) VALUES (?, ?)');
+    $dayStmt->execute([$body['date'], $_SESSION['user_id']]);
+
     $stmt = $db->prepare('
         INSERT INTO diary_entry (food_id, weight_grams, meal, date, user_id, created_at)
         VALUES (?, ?, ?, ?, ?, NOW())
@@ -83,7 +86,7 @@ function addEntry(): void
         $body['weight_grams'],
         $body['meal'],
         $body['date'],
-        $body['user_id'],
+        $_SESSION['user_id'],
     ]);
 
     json_ok(['entry_id' => $db->lastInsertId()], 201);

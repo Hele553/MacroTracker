@@ -2,6 +2,7 @@ const BASE = '/MacroTracker/php';
 async function request(endpoint, options = {}) {
     const res = await fetch(BASE + endpoint, {
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         ...options,
     })
     const data = await res.json(); 
@@ -22,5 +23,11 @@ export const api = {
     },
     food: {
         getAll: () => request('/food', {method: 'GET'}), 
-    }
+    },
+    auth: {
+        me:       () => request('/auth/me',       { method: 'GET'  }),
+        logout:   () => request('/auth/logout',   { method: 'POST' }),
+        login:    (body) => request('/auth/login',    { method: 'POST', body: JSON.stringify(body) }),
+        register: (body) => request('/auth/register', { method: 'POST', body: JSON.stringify(body) }),
+    },
 }

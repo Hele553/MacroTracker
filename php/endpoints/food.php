@@ -2,6 +2,11 @@
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../helper/response.php';
 
+if (empty($_SESSION['user_id'])) {
+    json_error('Non autenticato', 401);
+    exit;
+}
+
 $method = $_SERVER['REQUEST_METHOD'];
 
 $uri   = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
