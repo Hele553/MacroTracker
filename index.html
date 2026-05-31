@@ -11,6 +11,13 @@
 </head>
 
 <body>
+    <button class="hamburger" id="hamburger" aria-label="Apri menu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <div class="sidebar__overlay" id="sidebar__overlay"></div>
     <aside>
         <div class="sidebar__logo">
             <img src="assets/icon/macro.png" alt="">
@@ -92,7 +99,6 @@
             <div class="modal__overlay"></div>
 
             <div class="modal__box">
-
                 <div class="modal__header">
                     <h2 class="modal__title">Add to the diary</h2>
                     <button class="modal__close" id="btn-chiudi-modal" aria-label="Chiudi modal">
@@ -150,7 +156,6 @@
                             <button type="button" class="pasto-btn" data-pasto="Dinner">Dinner</button>
                             <button type="button" class="pasto-btn" data-pasto="Snack">Snack</button>
                         </div>
-                        <!-- campo nascosto che viene passato al form -->
                         <input type="hidden" id="campo-pasto" name="Pasto" value="Colazione" />
                     </div>
 
@@ -182,7 +187,7 @@
         </div>
         <div class="dashboard">
             <div class="dashboard__cake">
-                <!-- <img src="cake.png" alt="" style="height: 400px;"> -->
+                <canvas id="gauge" width="300" height="300" style="display: block;"></canvas>
             </div>
             <div class="dashboard__macros">
                 <div class="dashboard__macro" id="dashboard__macro-Cal"></div>
@@ -244,6 +249,38 @@
         </div>
     </main>
 
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const overlay = document.getElementById('sidebar__overlay');
+        const aside = document.querySelector('aside');
+
+        function openSidebar() {
+            aside.classList.add('sidebar--open');
+            overlay.classList.add('sidebar__overlay--visible');
+            hamburger.classList.add('hamburger--open');
+        }
+
+        function closeSidebar() {
+            aside.classList.remove('sidebar--open');
+            overlay.classList.remove('sidebar__overlay--visible');
+            hamburger.classList.remove('hamburger--open');
+        }
+
+        hamburger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            aside.classList.contains('sidebar--open') ? closeSidebar() : openSidebar();
+        });
+
+        overlay.addEventListener('click', closeSidebar);
+
+        document.querySelectorAll('.sidebar__option').forEach(opt => {
+            opt.addEventListener('click', () => {
+                if (window.innerWidth <= 768 && aside.classList.contains('sidebar--open')) {
+                    closeSidebar();
+                }
+            });
+        });
+    </script>
     <script src="js/main.js" type="module"></script>
 </body>
 

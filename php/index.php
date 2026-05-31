@@ -19,5 +19,6 @@ match($resource) {
     'diary'  => require __DIR__ . '/endpoints/diary.php',
     'food'   => require __DIR__ . '/endpoints/food.php',
     'auth'   => require __DIR__ . '/endpoints/auth.php', 
+    'user'   => require __DIR__ . '/endpoints/user.php',
     default  => json_error('Endpoint not found', 404),
 };

@@ -47,7 +47,7 @@ body {
     display: flex;
     flex-direction: row;
     height: 100vh;
-    overflow: hidden;
+    overflow: hidden;        
     background-color: var(--bg-main);
 }
 
@@ -94,7 +94,7 @@ aside {
     justify-content: left;
     gap: 20px;
     text-decoration: none;
-    transition: background-color .3s ease;
+    transition: all .3s ease;
 }
 
 .sidebar__option:hover {
@@ -118,7 +118,6 @@ aside {
     height: 20px;
 }
 
-/* === STROKE (dashboard, accedi, settings) === */
 .sidebar__icon--stroke path,
 .sidebar__icon--stroke circle {
     stroke: #ffffff;
@@ -131,7 +130,6 @@ aside {
     stroke: #9FE0C2;
 }
 
-/* === FILL path (food) === */
 .sidebar__icon--fill path {
     fill: #ffffff;
     transition: fill 0.3s ease;
@@ -141,7 +139,6 @@ aside {
     fill: #9FE0C2;
 }
 
-/* === FILL g (progress, recipes) === */
 .sidebar__icon--fill-g g {
     fill: #ffffff;
     transition: fill 0.3s ease;
@@ -172,7 +169,9 @@ main {
     display: flex;
     flex-direction: column;
     overflow-y: auto;
+    overflow-x: hidden;
     padding: 20px;
+    height: 100vh;           
 }
 
 .calendar {
@@ -265,9 +264,6 @@ main {
 #dashboard__macro-Pro:hover { background-color: rgba(124, 198, 166, 0.34); }
 #dashboard__macro-Fat:hover { background-color: #e89b8c56; }
 
-/* =================
-   Diario
-================= */
 
 .diary {
     padding: 20px 0px;
@@ -362,4 +358,170 @@ main {
 .diary__section_element_options img {
     height: 25px;
     cursor: pointer;
+}
+
+.hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 42px;
+    height: 42px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-medium);
+    border-radius: 10px;
+    cursor: pointer;
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 200;
+    transition: background 0.2s ease;
+}
+
+.hamburger span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background-color: var(--text-primary);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+    transform-origin: center;
+}
+
+.hamburger--open span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+.hamburger--open span:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+}
+.hamburger--open span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+.sidebar__overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 149;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none; 
+}
+
+.sidebar__overlay--visible {
+    opacity: 1;
+    pointer-events: all; 
+}
+
+@media (max-width: 768px) {
+
+    body {
+        overflow: visible;   
+        height: auto;
+        min-height: 100vh;
+        position: relative;
+    }
+
+    .hamburger {
+        display: flex;
+    }
+
+    .sidebar__overlay {
+        display: block;
+    }
+
+    aside {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 75vw;
+        max-width: 300px;
+        z-index: 150;
+        transform: translateX(-100%);
+        transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: none;
+        overflow-y: auto;
+    }
+
+    aside.sidebar--open {
+        transform: translateX(0);
+        box-shadow: 4px 0 30px rgba(0, 0, 0, 0.5);
+    }
+
+    main {
+        width: 100%;
+        height: auto;       
+        overflow-y: visible;
+        padding: 70px 12px 20px;
+    }
+
+    .dashboard {
+        grid-template-columns: 1fr;
+        min-height: auto;
+    }
+
+    .dashboard__cake {
+        padding: 20px 0 0;
+    }
+
+    .dashboard__macros {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        padding: 16px;
+    }
+
+    .dashboard__macro div p {
+        font-size: 7vw;
+    }
+
+    .calendar {
+        padding: 0 10px;
+        height: auto;
+        margin-bottom: 14px;
+    }
+
+    .calendar span {
+        font-size: 18px;
+    }
+
+    .diary__section_element {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .modal__box {
+        max-width: 95vw;
+        margin: 0 10px;
+    }
+
+    .field-row {
+        grid-template-columns: 1fr;
+    }
+
+    .macro-preview {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .pasto-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .sidebar__logo {
+        font-size: 1.4rem;
+        margin-bottom: 4vh;
+    }
+}
+
+@media (max-width: 400px) {
+    .dashboard__macros {
+        grid-template-columns: 1fr;
+    }
+
+    .diary__meal_header h3 {
+        font-size: 22px;
+    }
 }

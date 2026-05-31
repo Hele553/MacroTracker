@@ -21,6 +21,98 @@ async function reloadDashboard(macros) {
         })
 }
 
+async function relaodGauge(macros) {
+    const { data } = await api.user.getDailyCalories();
+    const GOAL = data.daily_calories;
+
+    const canvas = document.getElementById('gauge');
+    const ctx = canvas.getContext('2d');
+
+    const container = canvas.parentElement;
+    const size = Math.min(container.clientWidth, container.clientHeight);
+    canvas.width = size;
+    canvas.height = size;
+
+    const outerR = size * 0.43;
+    const innerR = size * 0.28;
+
+    function drawArcSegment(cx, cy, outerR, innerR, a1, a2, color) {
+        if (a2 <= a1) return;
+        ctx.beginPath();
+        ctx.arc(cx, cy, outerR, a1, a2);
+        ctx.arc(cx, cy, innerR, a2, a1, true);
+        ctx.closePath();
+        ctx.fillStyle = color;
+        ctx.fill();
+    }
+
+    function drawDivider(cx, cy, innerR, outerR, angle) {
+        ctx.beginPath();
+        ctx.moveTo(cx + innerR * Math.cos(angle), cy + innerR * Math.sin(angle));
+        ctx.lineTo(cx + outerR * Math.cos(angle), cy + outerR * Math.sin(angle));
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+    }
+
+    function draw() {
+        const carbsKcal = macros.carbs * 4;
+        const protKcal = macros.protein * 4;
+        const fatKcal = macros.fats * 9;
+        const total = carbsKcal + protKcal + fatKcal;
+        const clamped = Math.min(total, GOAL);
+
+        const W = canvas.width, H = canvas.height;
+        ctx.clearRect(0, 0, W, H);
+
+        const cx = W / 2, cy = H / 2;
+        const outerR = 130, innerR = 85;
+        const START = -Math.PI / 2;
+        const FULL = 2 * Math.PI;
+
+        const filledArc = GOAL > 0 ? (clamped / GOAL) * FULL : 0;
+
+        drawArcSegment(cx, cy, outerR, innerR, START, START + FULL, '#E0DDD5');
+
+        if (total > 0 && filledArc > 0) {
+            const segments = [
+                { kcal: carbsKcal, color: '#F2C879' },
+                { kcal: protKcal, color: '#7CC6A6' },
+                { kcal: fatKcal, color: '#E89B8C' },
+            ];
+
+            let cursor = START;
+            segments.forEach(s => {
+                if (s.kcal <= 0) return;
+                const seg = (s.kcal / total) * filledArc;
+                drawArcSegment(cx, cy, outerR, innerR, cursor, cursor + seg, s.color);
+                drawDivider(cx, cy, innerR, outerR, cursor + seg);
+                cursor += seg;
+            });
+            drawDivider(cx, cy, innerR, outerR, START);
+        }
+
+        ctx.beginPath();
+        ctx.arc(cx, cy, outerR, 0, FULL);
+        ctx.arc(cx, cy, innerR, FULL, 0, true);
+        ctx.closePath();
+        ctx.strokeStyle = '#0000';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        const pct = Math.min(100, Math.round((total / GOAL) * 100));
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#ffff';
+        ctx.font = '500 28px system-ui, sans-serif';
+        ctx.fillText(Math.round(total) + ' kcal', cx, cy - 4);
+        ctx.fillStyle = '#ffff';
+        ctx.font = '400 13px system-ui, sans-serif';
+        ctx.fillText('of ' + GOAL + '  ·  ' + pct + '%', cx, cy + 18);
+    }
+
+    draw();
+}
+
 async function loadAllEntries() {
     let macros = {
         calories: 0,
@@ -89,6 +181,8 @@ async function loadAllEntries() {
         })
     }
     await reloadDashboard(macros)
+    await relaodGauge(macros)
+    window.addEventListener('resize', () => relaodGauge(macros));
     console.log(macros)
 }
 

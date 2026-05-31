@@ -18,7 +18,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             await api.auth.register({ username, email, password, daily_calories: calories });
-            // Dopo la registrazione fai login automatico
             await api.auth.login({ username, password });
             window.location.href = 'index.html';
         } catch (err) {
