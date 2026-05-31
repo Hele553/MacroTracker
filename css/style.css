@@ -95,6 +95,7 @@ aside {
     gap: 20px;
     text-decoration: none;
     transition: all .3s ease;
+    border: solid 1px transparent;
 }
 
 .sidebar__option:hover {
