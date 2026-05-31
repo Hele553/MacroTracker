@@ -1,0 +1,129 @@
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+CREATE TABLE `food` (
+  `food_id`      int(11)       NOT NULL,
+  `name`         varchar(100)  NOT NULL,
+  `calories`     decimal(6,2)  NOT NULL CHECK (`calories` >= 0),
+  `carbs`        decimal(5,2)  NOT NULL CHECK (`carbs` >= 0),
+  `protein`      decimal(5,2)  NOT NULL CHECK (`protein` >= 0),
+  `fat`          decimal(5,2)  NOT NULL CHECK (`fat` >= 0),
+  `category`     varchar(50)   NOT NULL,
+  `company_id`   int(11)       DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+CREATE TABLE `allergen` (
+  `name` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+CREATE TABLE `company` (
+  `company_id`  int(11)       NOT NULL,
+  `name`        varchar(100)  NOT NULL,
+  `address`     varchar(150)  DEFAULT NULL,
+  `city`        varchar(50)   DEFAULT NULL,
+  `country`     varchar(50)   DEFAULT NULL,
+  `website`     varchar(100)  DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+CREATE TABLE `food_allergen` (
+  `food_id`       int(11)      NOT NULL,
+  `allergen_name` varchar(50)  NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+CREATE TABLE `user_allergen` (
+  `user_id`       int(11)      NOT NULL,
+  `allergen_name` varchar(50)  NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+CREATE TABLE `day` (
+  `date`    date    NOT NULL,
+  `user_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+
+CREATE TABLE `user` (
+  `user_id`           int(11)      NOT NULL,
+  `username`          varchar(50)  NOT NULL,
+  `email`             varchar(100) NOT NULL,
+  `password`          varchar(255) NOT NULL,
+  `target_weight`     decimal(5,2) DEFAULT NULL CHECK (`target_weight` > 0),
+  `weight`            decimal(5,2) DEFAULT NULL CHECK (`weight` > 0),
+  `daily_calories`    int(11)      NOT NULL CHECK (`daily_calories` > 0)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `diary_entry` (
+  `entry_id`        int(11)      NOT NULL,
+  `created_at`      datetime     NOT NULL,
+  `weight_grams`    decimal(6,2) NOT NULL CHECK (`weight_grams` > 0),
+  `meal`            enum('Breakfast','Lunch','Dinner','Snack') NOT NULL,
+  `food_id`         int(11)      NOT NULL,
+  `date`            date         NOT NULL,
+  `user_id`         int(11)      NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+ALTER TABLE `food`
+  ADD PRIMARY KEY (`food_id`),
+  ADD KEY `company_id` (`company_id`);
+
+ALTER TABLE `allergen`
+  ADD PRIMARY KEY (`name`);
+
+ALTER TABLE `company`
+  ADD PRIMARY KEY (`company_id`);
+
+ALTER TABLE `food_allergen`
+  ADD PRIMARY KEY (`food_id`, `allergen_name`),
+  ADD KEY `allergen_name` (`allergen_name`);
+
+ALTER TABLE `user_allergen`
+  ADD PRIMARY KEY (`user_id`, `allergen_name`),
+  ADD KEY `allergen_name` (`allergen_name`);
+
+ALTER TABLE `day`
+  ADD PRIMARY KEY (`date`, `user_id`),
+  ADD KEY `user_id` (`user_id`);
+
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`user_id`),
+  ADD UNIQUE KEY `email` (`email`);
+
+ALTER TABLE `diary_entry`
+  ADD PRIMARY KEY (`entry_id`),
+  ADD KEY `food_id` (`food_id`),
+  ADD KEY `date` (`date`, `user_id`);
+
+
+ALTER TABLE `food`         MODIFY `food_id`    int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `company`      MODIFY `company_id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `user`         MODIFY `user_id`    int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `diary_entry`  MODIFY `entry_id`   int(11) NOT NULL AUTO_INCREMENT;
+
+
+ALTER TABLE `food`
+  ADD CONSTRAINT `food_ibfk_1` FOREIGN KEY (`company_id`) REFERENCES `company` (`company_id`);
+
+ALTER TABLE `food_allergen`
+  ADD CONSTRAINT `food_allergen_ibfk_1` FOREIGN KEY (`food_id`)       REFERENCES `food`     (`food_id`),
+  ADD CONSTRAINT `food_allergen_ibfk_2` FOREIGN KEY (`allergen_name`) REFERENCES `allergen` (`name`);
+
+ALTER TABLE `user_allergen`
+  ADD CONSTRAINT `user_allergen_ibfk_1` FOREIGN KEY (`user_id`)       REFERENCES `user`     (`user_id`),
+  ADD CONSTRAINT `user_allergen_ibfk_2` FOREIGN KEY (`allergen_name`) REFERENCES `allergen` (`name`);
+
+ALTER TABLE `day`
+  ADD CONSTRAINT `day_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`);
+
+ALTER TABLE `diary_entry`
+  ADD CONSTRAINT `diary_entry_ibfk_1` FOREIGN KEY (`food_id`)          REFERENCES `food` (`food_id`),
+  ADD CONSTRAINT `diary_entry_ibfk_2` FOREIGN KEY (`date`, `user_id`)  REFERENCES `day`  (`date`, `user_id`);
+
+COMMIT;
